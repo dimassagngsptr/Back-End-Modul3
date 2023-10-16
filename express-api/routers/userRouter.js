@@ -1,7 +1,10 @@
 const router = require("express").Router();
 const { userController } = require("../controllers");
+const { getTime } = require("../middleware/time");
 
-router.get("/", userController.getAll);
+// middleware dipasang ditengah2 
+
+router.get("/", getTime, userController.getAll);
 router.get("/:id", userController.getById);
 router.post("/", userController.postAll);
 router.delete("/:id", userController.deleteById);
