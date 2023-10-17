@@ -1,0 +1,58 @@
+[
+   {
+      "product": "susu",
+      "price": 20000,
+      "category": "drink",
+      "id": 1,
+      "date": "2022-10-10"
+   },
+   {
+      "product": "amer",
+      "price": 20000,
+      "category": "drink",
+      "id": 2,
+      "date": "2022-10-30"
+   },
+   {
+      "product": "anggur",
+      "price": 20000,
+      "category": "drink",
+      "id": 3,
+      "date": "2023-09-18"
+   },
+   {
+      "product": "leci",
+      "price": 20000,
+      "category": "drink",
+      "id": 4,
+      "date": "2023-10-8"
+   },
+   {
+      "product": "telor",
+      "price": 20000,
+      "category": "food",
+      "id": 5,
+      "date": "2023-09-29"
+   },
+   {
+      "product": "nasi",
+      "price": 20000,
+      "category": "food",
+      "id": 6,
+      "date": "2023-09-30"
+   },
+   {
+      "product": "pertamax",
+      "price": 50000,
+      "category": "gasoline",
+      "id": 7,
+      "date": "2023-10-17"
+   },
+   {
+      "product": "pertalite",
+      "price": 50000,
+      "category": "gasoline",
+      "id": 8,
+      "date": "2023-10-17"
+   }
+]
