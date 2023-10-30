@@ -29,6 +29,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
          },
+         imgProfile: {
+            type: DataTypes.STRING,
+         },
       },
       {
          sequelize,

@@ -6,12 +6,20 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setData } from "./redux/userSlice";
 import { Required } from "./components/required";
+import { Verify } from "./components/verify";
 
 const router = createBrowserRouter([
-   { path: "/", element: <Welcome /> },
+   {
+      path: "/",
+      element: <Welcome />,
+   },
    {
       element: <Required />,
       children: [{ path: "/beranda", element: <Beranda /> }],
+   },
+   {
+      path: "/verify/:token",
+      element: <Verify />,
    },
 ]);
 
@@ -22,11 +30,14 @@ function App() {
 
    const keepLogin = async () => {
       try {
-         const response = await axios.get(`http://localhost:2000/users/keeplogin`, {
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
-         });
+         const response = await axios.get(
+            `http://localhost:2000/users/keeplogin`,
+            {
+               headers: {
+                  Authorization: `Bearer ${token}`,
+               },
+            }
+         );
          console.log(response.data);
          dispatch(setData(response.data.result));
       } catch (err) {

@@ -2,6 +2,9 @@ const db = require("../models");
 const User = db.User;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
+const handlebars = require("handlebars");
+const transporter = require("../middleware/transporter");
 
 module.exports = {
    register: async (req, res) => {
@@ -20,6 +23,17 @@ module.exports = {
          const hasPassword = await bcrypt.hash(password, salt);
 
          await User.create({ username, email, password: hasPassword, isAdmin });
+
+         const data = fs.readFileSync("./template.html", "utf-8");
+         const tempCompile = await handlebars.compile(data);
+         const tempResult = tempCompile({ username: username });
+
+         await transporter.sendMail({
+            from: "dimasageng@gmail.com",
+            to: email,
+            subject: "Email confirmation",
+            html: tempResult,
+         });
          res.status(200).send({ message: "Success" });
       } catch (error) {
          res.status(400).send({ message: error.message });
@@ -103,5 +117,20 @@ module.exports = {
          res.status(400).send({ message: error.message });
       }
    },
-   
+   updateImg: async (req, res) => {
+      try {
+         console.log(req.file);
+         await User.update(
+            { imgProfile: req.file?.path },
+            {
+               where: {
+                  id: req.user.id,
+               },
+            }
+         );
+         res.status(200).send("success upload");
+      } catch (error) {
+         res.status(400).send({ message: error.message });
+      }
+   },
 };

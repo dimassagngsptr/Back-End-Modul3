@@ -17,6 +17,6 @@ app.use("/users", userRouter);
 app.use("/tweets", tweetRouter);
 
 app.listen(PORT, () => {
-   //  db.sequelize.sync({ alter: true });
+   //  db.sequelize.sync({ alter: true });   
    console.log(`listening on ${PORT}`);
 });

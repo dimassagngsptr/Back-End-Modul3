@@ -2,6 +2,9 @@ const db = require("../models");
 const User = db.User;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
+const handlebars = require("handlebars");
+const transporter = require("../middleware/transporter");
 
 module.exports = {
    register: async (req, res) => {
@@ -19,7 +22,28 @@ module.exports = {
          const salt = await bcrypt.genSalt(10);
          const hasPassword = await bcrypt.hash(password, salt);
 
-         await User.create({ username, email, password: hasPassword });
+         const createAccount = await User.create({
+            username,
+            email,
+            password: hasPassword,
+         });
+
+         const payload = { id: createAccount.id };
+         const token = jwt.sign(payload, "TWITTER");
+
+         const data = fs.readFileSync("./template.html", "utf-8");
+         const tempCompile = await handlebars.compile(data);
+         const tempResult = tempCompile({
+            username: username,
+            link: `http://localhost:3000/verify/${token}`,
+         });
+
+         await transporter.sendMail({
+            from: "dimasageng@gmail.com",
+            to: email,
+            subject: "Email confirmation",
+            html: tempResult,
+         });
          res.status(200).send({ message: "Success" });
       } catch (error) {
          res.status(400).send({ message: error.message });
@@ -109,6 +133,22 @@ module.exports = {
          res.status(200).send({ result });
       } catch (error) {
          console.log(error);
+      }
+   },
+   isVerify: async (req, res) => {
+      try {
+         const result = await User.update(
+            { isVerify: true },
+            {
+               where: {
+                  id: req.user.id,
+               },
+            }
+         );
+         res.status(200).send({ result });
+      } catch (error) {
+         console.log(error);
+         res.status(400).send({ message: error.message });
       }
    },
 };

@@ -15,21 +15,24 @@ import {
 } from "@chakra-ui/react";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const RegisterSchema = Yup.object().shape({
    username: Yup.string().required("Username is required"),
    email: Yup.string()
-      .required("Email is required")
-      .email("Invalid email format"),
+      .required("Email is required"),
+      // .email("Invalid email format"),
    password: Yup.string()
       .min(4, "Minimum 4 character")
       .required("Password is required"),
 });
 
+
 export const Register = () => {
    const toast = useToast();
    const { isOpen, onOpen, onClose } = useDisclosure();
+   const navigate = useNavigate()
 
    const handleSubmit = async (data) => {
       try {
@@ -41,6 +44,7 @@ export const Register = () => {
             isClosable: true,
             position: "top-left",
          });
+         // navigate('/verify')
       } catch (err) {
          console.log(err);
          alert(err?.response?.data?.message);
